@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +13,13 @@ namespace Snake.Controllers
 {
     public class MessageController : Controller
     {
+        protected UserManager<UserModel> UserManager { get; }
         private readonly EFContext _context;
 
-        public MessageController(EFContext context)
+        public MessageController(EFContext context, UserManager<UserModel> userManager)
         {
             _context = context;
+            UserManager = userManager;
         }
 
         // GET: Message
@@ -44,9 +47,11 @@ namespace Snake.Controllers
         }
 
         // GET: Message/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            return View();
+            MessageModel message = new MessageModel();
+            message.Channel = _context.Channels.SingleOrDefault(c => c.ID == id);
+            return View(message);
         }
 
         // POST: Message/Create
@@ -54,8 +59,12 @@ namespace Snake.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Message,Created")] MessageModel messageModel)
+        public async Task<IActionResult> Create([Bind("Message")] MessageModel messageModel, int id)
         {
+            messageModel.Channel = _context.Channels.SingleOrDefault(c => c.ID == id);
+            messageModel.Created = DateTime.Now;
+            messageModel.User = await UserManager.GetUserAsync(User);
+
             if (ModelState.IsValid)
             {
                 _context.Add(messageModel);
