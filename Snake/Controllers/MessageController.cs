@@ -69,7 +69,7 @@ namespace Snake.Controllers
             {
                 _context.Add(messageModel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Redirect("/Channel/Details/" + messageModel.Channel.ID);
             }
             return View(messageModel);
         }

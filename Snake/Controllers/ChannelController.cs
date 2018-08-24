@@ -33,8 +33,9 @@ namespace Snake.Controllers
                 return NotFound();
             }
 
-            var channelModel = await _context.Channels
+            var channelModel = await _context.Channels.Include(c => c.Messages)
                 .SingleOrDefaultAsync(m => m.ID == id);
+
             if (channelModel == null)
             {
                 return NotFound();
