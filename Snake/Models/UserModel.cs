@@ -8,6 +8,16 @@ namespace Snake.Models
 {
     public class UserModel : IdentityUser<int>
     {
-        
+        public UserModel(string userName) : base(userName)
+        {
+        }
+        public UserModel()
+        {
+
+        }
+
+        public ICollection<MessageModel> Messages { get; set; }
+        public ICollection<ChannelModel> Channels { get; set; }
+        public UserChannelModel UserChannel { get; set; }
     }
 }

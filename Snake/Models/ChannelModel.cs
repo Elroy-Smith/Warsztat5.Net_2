@@ -15,5 +15,8 @@ namespace Snake.Models
 
         [Required]
         public string Color { get; set; }
+
+        public ICollection<MessageModel> Messages { get; set; }
+        public UserChannelModel UserChannel { get; set; }
     }
 }

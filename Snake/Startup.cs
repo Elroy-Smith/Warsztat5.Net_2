@@ -32,8 +32,8 @@ namespace Snake
         {
             services.AddDbContext<EFContext>(
                 builer => builer.UseSqlServer(Configuration["connectionString"]));
-            services.AddIdentity<UserModel, IdentityRole>().
-                AddEntityFrameworkStores<EFContext>();
+            services.AddIdentity<UserModel, IdentityRole<int>>().
+                AddEntityFrameworkStores<EFContext>().AddDefaultTokenProviders();
             services.AddMvc();
         }
 
