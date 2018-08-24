@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Snake.Context;
+using Snake.Models;
 
 namespace Snake
 {
@@ -31,7 +32,7 @@ namespace Snake
         {
             services.AddDbContext<EFContext>(
                 builer => builer.UseSqlServer(Configuration["connectionString"]));
-            services.AddIdentity<IdentityUser, IdentityRole>().
+            services.AddIdentity<UserModel, IdentityRole>().
                 AddEntityFrameworkStores<EFContext>();
             services.AddMvc();
         }
